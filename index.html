@@ -3,63 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbería Web - Agendamiento de Citas</title>
+    <title>Barbería Web - Sistema de Gestión y Citas</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #1a1a1a; color: #fff; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #2a2a2a; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        h1, h2 { text-align: center; color: #d4af37; }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        select, input, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: none; box-sizing: border-box; }
-        select, input { background: #333; color: #fff; border: 1px solid #555; }
-        .grid-horarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .btn-hora { background: #444; color: #fff; cursor: pointer; border: 1px solid #666; text-align: center; transition: background 0.2s; }
-        .btn-hora:hover { background: #b8962e; color: #000; }
-        .btn-hora.seleccionado { background: #d4af37; color: #000; font-weight: bold; border-color: #fff; }
-        .btn-confirmar { background: #d4af37; color: #000; font-weight: bold; margin-top: 25px; cursor: pointer; font-size: 16px; }
-        .btn-confirmar:hover { background: #b8962e; }
+        :root {
+            --primary: #d4af37;
+            --primary-hover: #b8962e;
+            --bg-dark: #0f0f12;
+            --card-bg: rgba(30, 30, 38, 0.75);
+            --card-border: rgba(212, 175, 55, 0.2);
+            --text-light: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            /* Fondo profesional con degradado radial y patrón oscuro */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                linear-gradient(135deg, #0a0a0c 0%, #16161e 100%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.2rem; color: var(--text-muted); font-weight: 400; }
+
+        /* Estilos de Formularios */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 15, 18, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Botones */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #d4af37 0%, #aa8828 100%);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Grid de Horarios */
+        .grid-horarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-hora {
+            background: rgba(40, 40, 50, 0.8);
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .btn-hora:hover {
+            background: var(--primary-hover);
+            color: #000;
+        }
+
+        .btn-hora.seleccionado {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+            border-color: #fff;
+        }
+
+        /* Tabla de Reservas */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(15, 15, 18, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge-pendiente { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+        .badge-completada { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid var(--success); }
+
+        .btn-accion {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background: var(--success);
+            color: #fff;
+        }
+
+        .oculto { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>BARBERÍA WEB</h1>
-    <h2>Agendamiento de Citas</h2>
+    <!-- PANTALLA 1: LOGIN -->
+    <div id="seccionLogin">
+        <h1>BARBERÍA WEB</h1>
+        <h2>Iniciar Sesión</h2>
+        <form id="formLogin">
+            <div class="form-group">
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" placeholder="Ej: admin o cliente" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn">Ingresar al Sistema</button>
+        </form>
+    </div>
 
-    <form id="formReserva">
-        <label for="servicio">1. Selecciona Servicio:</label>
-        <select id="servicio" required>
-            <option value="Corte de Cabello y Barba">Corte de Cabello y Barba ($35.000)</option>
-            <option value="Corte Solo">Corte Solo ($25.000)</option>
-            <option value="Arreglo de Barba">Arreglo de Barba ($15.000)</option>
-        </select>
+    <!-- PANTALLA 2: PANEL PRINCIPAL (RESERVAS Y TABLA) -->
+    <div id="seccionPanel" class="oculto">
+        <h1>BARBERÍA WEB</h1>
+        <h2>Panel de Agendamiento y Control</h2>
 
-        <label for="barbero">2. Selecciona Barbero:</label>
-        <select id="barbero" required>
-            <option value="Carlos Mario Guerra">Carlos Mario Guerra</option>
-            <option value="Manuel Santiago Porte">Manuel Santiago Porte</option>
-        </select>
+        <!-- Formulario de Citas -->
+        <form id="formReserva">
+            <div class="form-group">
+                <label for="servicio">1. Selecciona Servicio:</label>
+                <select id="servicio" required>
+                    <option value="Corte de Cabello y Barba ($35.000)">Corte de Cabello y Barba ($35.000)</option>
+                    <option value="Corte Solo ($25.000)">Corte Solo ($25.000)</option>
+                    <option value="Arreglo de Barba ($15.000)">Arreglo de Barba ($15.000)</option>
+                </select>
+            </div>
 
-        <label for="fecha">3. Selecciona Fecha:</label>
-        <input type="date" id="fecha" required>
+            <div class="form-group">
+                <label for="barbero">2. Selecciona Barbero:</label>
+                <select id="barbero" required>
+                    <option value="Carlos Mario Guerra">Carlos Mario Guerra</option>
+                    <option value="Manuel Santiago Porte">Manuel Santiago Porte</option>
+                </select>
+            </div>
 
-        <label>4. Selecciona Horario:</label>
-        <div class="grid-horarios" id="gridHorarios">
-            <button type="button" class="btn-hora" data-hora="09:00 AM">09:00 AM</button>
-            <button type="button" class="btn-hora" data-hora="10:00 AM">10:00 AM</button>
-            <button type="button" class="btn-hora" data-hora="11:30 AM">11:30 AM</button>
-            <button type="button" class="btn-hora" data-hora="02:00 PM">02:00 PM</button>
-            <button type="button" class="btn-hora" data-hora="03:30 PM">03:30 PM</button>
-            <button type="button" class="btn-hora" data-hora="05:00 PM">05:00 PM</button>
+            <div class="form-group">
+                <label for="fecha">3. Selecciona Fecha:</label>
+                <input type="date" id="fecha" required>
+            </div>
+
+            <div class="form-group">
+                <label>4. Selecciona Horario:</label>
+                <div class="grid-horarios">
+                    <button type="button" class="btn-hora" data-hora="09:00 AM">09:00 AM</button>
+                    <button type="button" class="btn-hora" data-hora="10:00 AM">10:00 AM</button>
+                    <button type="button" class="btn-hora" data-hora="11:30 AM">11:30 AM</button>
+                    <button type="button" class="btn-hora" data-hora="02:00 PM">02:00 PM</button>
+                    <button type="button" class="btn-hora" data-hora="03:30 PM">03:30 PM</button>
+                    <button type="button" class="btn-hora" data-hora="05:00 PM">05:00 PM</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Confirmar Reserva</button>
+        </form>
+
+        <!-- Tabla de Reservas -->
+        <h2 style="margin-top: 40px;">Registro de Reservas</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Barbero</th>
+                        <th>Fecha y Hora</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReservasBody">
+                    <!-- Ejemplo inicial de reserva cumplida -->
+                    <tr>
+                        <td>Juan Pérez</td>
+                        <td>Corte Solo ($25.000)</td>
+                        <td>Carlos Mario Guerra</td>
+                        <td>2026-03-20 | 10:00 AM</td>
+                        <td><span class="badge badge-completada">Cumplida</span></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <button type="submit" class="btn-confirmar">CONFIRMAR RESERVA</button>
-    </form>
+        <button type="button" class="btn btn-secondary" id="btnCerrarSesion">Cerrar Sesión</button>
+    </div>
 </div>
 
 <script>
     let horaSeleccionada = null;
+    let usuarioActual = "";
 
-    // Lógica para seleccionar visualmente la hora
+    // Lógica de Inicio de Sesión
+    document.getElementById('formLogin').addEventListener('submit', function(e) {
+        e.preventDefault();
+        usuarioActual = document.getElementById('usuario').value;
+        
+        // Simulación de ingreso
+        document.getElementById('seccionLogin').classList.add('oculto');
+        document.getElementById('seccionPanel').classList.remove('oculto');
+    });
+
+    // Cerrar Sesión
+    document.getElementById('btnCerrarSesion').addEventListener('click', function() {
+        document.getElementById('seccionPanel').classList.add('oculto');
+        document.getElementById('seccionLogin').classList.remove('oculto');
+        document.getElementById('formLogin').reset();
+    });
+
+    // Selección interactiva de horarios
     const botonesHora = document.querySelectorAll('.btn-hora');
     botonesHora.forEach(boton => {
         boton.addEventListener('click', function() {
@@ -69,7 +343,7 @@
         });
     });
 
-    // Validación y envío del formulario
+    // Guardar Reserva y actualizar la tabla
     document.getElementById('formReserva').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -82,8 +356,37 @@
         const barbero = document.getElementById('barbero').value;
         const fecha = document.getElementById('fecha').value;
 
-        alert(`¡Cita agendada con éxito!\n\nServicio: ${servicio}\nBarbero: ${barbero}\nFecha: ${fecha}\nHora: ${horaSeleccionada}`);
+        // Crear nueva fila en la tabla
+        const tbody = document.getElementById('tablaReservasBody');
+        const nuevaFila = document.createElement('tr');
+
+        nuevaFila.innerHTML = `
+            <td>${usuarioActual}</td>
+            <td>${servicio}</td>
+            <td>${barbero}</td>
+            <td>${fecha} | ${horaSeleccionada}</td>
+            <td><span class="badge badge-pendiente">Pendiente</span></td>
+            <td><button class="btn-accion" onclick="marcarCumplida(this)">Marcar Cumplida</button></td>
+        `;
+
+        tbody.appendChild(nuevaFila);
+
+        alert('¡Cita registrada y añadida a la tabla de control!');
+
+        // Limpiar selección de horario
+        botonesHora.forEach(b => b.classList.remove('seleccionado'));
+        horaSeleccionada = null;
     });
+
+    // Función para cambiar estado a Cumplida
+    function marcarCumplida(boton) {
+        const fila = boton.closest('tr');
+        const celdaEstado = fila.cells[4];
+        const celdaAccion = fila.cells[5];
+
+        celdaEstado.innerHTML = '<span class="badge badge-completada">Cumplida</span>';
+        celdaAccion.innerHTML = '-';
+    }
 </script>
 
 </body>
