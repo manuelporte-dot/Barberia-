@@ -12,8 +12,9 @@
         select, input, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: none; box-sizing: border-box; }
         select, input { background: #333; color: #fff; border: 1px solid #555; }
         .grid-horarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .btn-hora { background: #444; color: #fff; cursor: pointer; border: 1px solid #666; text-align: center; }
-        .btn-hora:hover { background: #d4af37; color: #000; }
+        .btn-hora { background: #444; color: #fff; cursor: pointer; border: 1px solid #666; text-align: center; transition: background 0.2s; }
+        .btn-hora:hover { background: #b8962e; color: #000; }
+        .btn-hora.seleccionado { background: #d4af37; color: #000; font-weight: bold; border-color: #fff; }
         .btn-confirmar { background: #d4af37; color: #000; font-weight: bold; margin-top: 25px; cursor: pointer; font-size: 16px; }
         .btn-confirmar:hover { background: #b8962e; }
     </style>
@@ -26,29 +27,29 @@
 
     <form id="formReserva">
         <label for="servicio">1. Selecciona Servicio:</label>
-        <select id="servicio">
-            <option value="1">Corte de Cabello y Barba ($35.000)</option>
-            <option value="2">Corte Solo ($25.000)</option>
-            <option value="3">Arreglo de Barba ($15.000)</option>
+        <select id="servicio" required>
+            <option value="Corte de Cabello y Barba">Corte de Cabello y Barba ($35.000)</option>
+            <option value="Corte Solo">Corte Solo ($25.000)</option>
+            <option value="Arreglo de Barba">Arreglo de Barba ($15.000)</option>
         </select>
 
         <label for="barbero">2. Selecciona Barbero:</label>
-        <select id="barbero">
-            <option value="1">Carlos Mario Guerra</option>
-            <option value="2">Manuel Santiago Porte</option>
+        <select id="barbero" required>
+            <option value="Carlos Mario Guerra">Carlos Mario Guerra</option>
+            <option value="Manuel Santiago Porte">Manuel Santiago Porte</option>
         </select>
 
         <label for="fecha">3. Selecciona Fecha:</label>
         <input type="date" id="fecha" required>
 
-        <label>4. Horarios Disponibles:</label>
-        <div class="grid-horarios">
-            <button type="button" class="btn-hora">09:00 AM</button>
-            <button type="button" class="btn-hora">10:00 AM</button>
-            <button type="button" class="btn-hora">11:30 AM</button>
-            <button type="button" class="btn-hora">02:00 PM</button>
-            <button type="button" class="btn-hora">03:30 PM</button>
-            <button type="button" class="btn-hora">05:00 PM</button>
+        <label>4. Selecciona Horario:</label>
+        <div class="grid-horarios" id="gridHorarios">
+            <button type="button" class="btn-hora" data-hora="09:00 AM">09:00 AM</button>
+            <button type="button" class="btn-hora" data-hora="10:00 AM">10:00 AM</button>
+            <button type="button" class="btn-hora" data-hora="11:30 AM">11:30 AM</button>
+            <button type="button" class="btn-hora" data-hora="02:00 PM">02:00 PM</button>
+            <button type="button" class="btn-hora" data-hora="03:30 PM">03:30 PM</button>
+            <button type="button" class="btn-hora" data-hora="05:00 PM">05:00 PM</button>
         </div>
 
         <button type="submit" class="btn-confirmar">CONFIRMAR RESERVA</button>
@@ -56,9 +57,32 @@
 </div>
 
 <script>
+    let horaSeleccionada = null;
+
+    // Lógica para seleccionar visualmente la hora
+    const botonesHora = document.querySelectorAll('.btn-hora');
+    botonesHora.forEach(boton => {
+        boton.addEventListener('click', function() {
+            botonesHora.forEach(b => b.classList.remove('seleccionado'));
+            this.classList.add('seleccionado');
+            horaSeleccionada = this.getAttribute('data-hora');
+        });
+    });
+
+    // Validación y envío del formulario
     document.getElementById('formReserva').addEventListener('submit', function(e) {
         e.preventDefault();
-        alert('¡Cita agendada con éxito en la simulación!');
+
+        if (!horaSeleccionada) {
+            alert('Por favor, selecciona un horario disponible.');
+            return;
+        }
+
+        const servicio = document.getElementById('servicio').value;
+        const barbero = document.getElementById('barbero').value;
+        const fecha = document.getElementById('fecha').value;
+
+        alert(`¡Cita agendada con éxito!\n\nServicio: ${servicio}\nBarbero: ${barbero}\nFecha: ${fecha}\nHora: ${horaSeleccionada}`);
     });
 </script>
 
