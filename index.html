@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbería Web - Sistema de Gestión y Citas</title>
+    <title>Barbería Web - Sistema de Gestión, Citas y Pagos</title>
     <style>
         :root {
             --primary: #d4af37;
             --primary-hover: #b8962e;
             --bg-dark: #0f0f12;
-            --card-bg: rgba(30, 30, 38, 0.75);
+            --card-bg: rgba(30, 30, 38, 0.85);
             --card-border: rgba(212, 175, 55, 0.2);
             --text-light: #f0f0f0;
             --text-muted: #a0a0a0;
             --success: #28a745;
             --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
         }
 
         * {
@@ -32,7 +34,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            /* Fondo profesional con degradado radial y patrón oscuro */
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
@@ -42,7 +43,7 @@
 
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -62,6 +63,35 @@
 
         h1 { font-size: 2rem; }
         h2 { font-size: 1.2rem; color: var(--text-muted); font-weight: 400; }
+
+        /* Tarjetas de Estadísticas / Pagos */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(15, 15, 18, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
 
         /* Estilos de Formularios */
         .form-group {
@@ -202,15 +232,42 @@
 
         .badge-pendiente { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid var(--warning); }
         .badge-completada { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .badge-pago { background: rgba(23, 162, 184, 0.2); color: var(--info); border: 1px solid var(--info); }
+        .badge-sin-pago { background: rgba(220, 53, 69, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
         .btn-accion {
-            padding: 5px 10px;
-            font-size: 0.75rem;
+            padding: 6px 12px;
+            font-size: 0.8rem;
             border-radius: 4px;
             border: none;
             cursor: pointer;
             background: var(--success);
             color: #fff;
+            font-weight: bold;
+        }
+
+        /* Modal para elegir método de pago al finalizar */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #22222a;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
 
         .oculto { display: none; }
@@ -226,7 +283,7 @@
         <form id="formLogin">
             <div class="form-group">
                 <label for="usuario">Usuario:</label>
-                <input type="text" id="usuario" placeholder="Ej: admin o cliente" required>
+                <input type="text" id="usuario" placeholder="Ej: admin o barbero" required>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña:</label>
@@ -236,19 +293,35 @@
         </form>
     </div>
 
-    <!-- PANTALLA 2: PANEL PRINCIPAL (RESERVAS Y TABLA) -->
+    <!-- PANTALLA 2: PANEL PRINCIPAL -->
     <div id="seccionPanel" class="oculto">
         <h1>BARBERÍA WEB</h1>
-        <h2>Panel de Agendamiento y Control</h2>
+        <h2>Panel de Gestión, Citas y Caja</h2>
 
-        <!-- Formulario de Citas -->
+        <!-- Resumen Financiero -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Recaudado Hoy</h3>
+                <div class="stat-value" id="totalRecaudado">$0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Citas Completadas</h3>
+                <div class="stat-value" id="countCompletadas">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Citas Pendientes</h3>
+                <div class="stat-value" id="countPendientes">0</div>
+            </div>
+        </div>
+
+        <!-- Formulario de Agendamiento -->
         <form id="formReserva">
             <div class="form-group">
                 <label for="servicio">1. Selecciona Servicio:</label>
                 <select id="servicio" required>
-                    <option value="Corte de Cabello y Barba ($35.000)">Corte de Cabello y Barba ($35.000)</option>
-                    <option value="Corte Solo ($25.000)">Corte Solo ($25.000)</option>
-                    <option value="Arreglo de Barba ($15.000)">Arreglo de Barba ($15.000)</option>
+                    <option value="Corte de Cabello y Barba" data-precio="35000">Corte de Cabello y Barba ($35.000)</option>
+                    <option value="Corte Solo" data-precio="25000">Corte Solo ($25.000)</option>
+                    <option value="Arreglo de Barba" data-precio="15000">Arreglo de Barba ($15.000)</option>
                 </select>
             </div>
 
@@ -277,33 +350,26 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn">Confirmar Reserva</button>
+            <button type="submit" class="btn">Agendar Cita</button>
         </form>
 
-        <!-- Tabla de Reservas -->
-        <h2 style="margin-top: 40px;">Registro de Reservas</h2>
+        <!-- Tabla de Control e Informe de Pagos -->
+        <h2 style="margin-top: 40px;">Informe de Citas y Pagos</h2>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Cliente</th>
-                        <th>Servicio</th>
+                        <th>Servicio y Precio</th>
                         <th>Barbero</th>
                         <th>Fecha y Hora</th>
+                        <th>Método de Pago</th>
                         <th>Estado</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="tablaReservasBody">
-                    <!-- Ejemplo inicial de reserva cumplida -->
-                    <tr>
-                        <td>Juan Pérez</td>
-                        <td>Corte Solo ($25.000)</td>
-                        <td>Carlos Mario Guerra</td>
-                        <td>2026-03-20 | 10:00 AM</td>
-                        <td><span class="badge badge-completada">Cumplida</span></td>
-                        <td>-</td>
-                    </tr>
+                    <!-- Se llena dinámicamente -->
                 </tbody>
             </table>
         </div>
@@ -312,28 +378,52 @@
     </div>
 </div>
 
+<!-- VENTANA MODAL PARA REGISTRAR PAGO AL FINALIZAR -->
+<div id="modalPago" class="modal">
+    <div class="modal-content">
+        <h2>Finalizar Corte y Pagar</h2>
+        <p id="infoCorteModal" style="margin: 15px 0; color: var(--text-muted);"></p>
+        
+        <div class="form-group" style="text-align: left;">
+            <label for="metodoSeleccionado">Selecciona Método de Pago:</label>
+            <select id="metodoSeleccionado">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Nequi">Nequi</option>
+            </select>
+        </div>
+
+        <button type="button" class="btn" id="btnConfirmarPago">Confirmar Pago y Cerrar Cita</button>
+        <button type="button" class="btn btn-secondary" id="btnCancelarModal">Cancelar</button>
+    </div>
+</div>
+
 <script>
     let horaSeleccionada = null;
     let usuarioActual = "";
+    let totalRecaudado = 0;
+    let citasCompletadas = 0;
+    let citasPendientes = 0;
+    let filaEnProceso = null;
+    let precioEnProceso = 0;
 
-    // Lógica de Inicio de Sesión
+    // Login
     document.getElementById('formLogin').addEventListener('submit', function(e) {
         e.preventDefault();
         usuarioActual = document.getElementById('usuario').value;
-        
-        // Simulación de ingreso
         document.getElementById('seccionLogin').classList.add('oculto');
         document.getElementById('seccionPanel').classList.remove('oculto');
+        actualizarMetricas();
     });
 
-    // Cerrar Sesión
+    // Logout
     document.getElementById('btnCerrarSesion').addEventListener('click', function() {
         document.getElementById('seccionPanel').classList.add('oculto');
         document.getElementById('seccionLogin').classList.remove('oculto');
         document.getElementById('formLogin').reset();
     });
 
-    // Selección interactiva de horarios
+    // Selección de hora
     const botonesHora = document.querySelectorAll('.btn-hora');
     botonesHora.forEach(boton => {
         boton.addEventListener('click', function() {
@@ -343,7 +433,7 @@
         });
     });
 
-    // Guardar Reserva y actualizar la tabla
+    // Agendar Cita (Sin pago previo, estado Pendiente)
     document.getElementById('formReserva').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -352,40 +442,80 @@
             return;
         }
 
-        const servicio = document.getElementById('servicio').value;
+        const servicioSelect = document.getElementById('servicio');
+        const servicioTexto = servicioSelect.value;
+        const precioServicio = parseInt(servicioSelect.options[servicioSelect.selectedIndex].getAttribute('data-precio'));
         const barbero = document.getElementById('barbero').value;
         const fecha = document.getElementById('fecha').value;
 
-        // Crear nueva fila en la tabla
+        citasPendientes++;
+        actualizarMetricas();
+
         const tbody = document.getElementById('tablaReservasBody');
         const nuevaFila = document.createElement('tr');
 
+        // Guardamos el precio en un atributo para usarlo luego
+        nuevaFila.setAttribute('data-precio', precioServicio);
+
         nuevaFila.innerHTML = `
             <td>${usuarioActual}</td>
-            <td>${servicio}</td>
+            <td>${servicioTexto} ($${precioServicio.toLocaleString()})</td>
             <td>${barbero}</td>
             <td>${fecha} | ${horaSeleccionada}</td>
+            <td><span class="badge badge-sin-pago">Pendiente de pago</span></td>
             <td><span class="badge badge-pendiente">Pendiente</span></td>
-            <td><button class="btn-accion" onclick="marcarCumplida(this)">Marcar Cumplida</button></td>
+            <td><button class="btn-accion" onclick="abrirModalPago(this)">Finalizar Corte</button></td>
         `;
 
         tbody.appendChild(nuevaFila);
+        alert('¡Cita agendada con éxito!');
 
-        alert('¡Cita registrada y añadida a la tabla de control!');
-
-        // Limpiar selección de horario
         botonesHora.forEach(b => b.classList.remove('seleccionado'));
         horaSeleccionada = null;
+        document.getElementById('formReserva').reset();
     });
 
-    // Función para cambiar estado a Cumplida
-    function marcarCumplida(boton) {
-        const fila = boton.closest('tr');
-        const celdaEstado = fila.cells[4];
-        const celdaAccion = fila.cells[5];
+    // Abrir Modal al hacer clic en Finalizar Corte
+    function abrirModalPago(boton) {
+        filaEnProceso = boton.closest('tr');
+        const servicioInfo = filaEnProceso.cells[1].innerText;
+        const clienteInfo = filaEnProceso.cells[0].innerText;
+        precioEnProceso = parseInt(filaEnProceso.getAttribute('data-precio'));
 
-        celdaEstado.innerHTML = '<span class="badge badge-completada">Cumplida</span>';
-        celdaAccion.innerHTML = '-';
+        document.getElementById('infoCorteModal').innerText = `Cliente: ${clienteInfo} \n Servicio: ${servicioInfo}`;
+        document.getElementById('modalPago').style.display = 'flex';
+    }
+
+    // Cancelar modal
+    document.getElementById('btnCancelarModal').addEventListener('click', function() {
+        document.getElementById('modalPago').style.display = 'none';
+        filaEnProceso = null;
+    });
+
+    // Confirmar Pago al finalizar el corte
+    document.getElementById('btnConfirmarPago').addEventListener('click', function() {
+        const metodoElegido = document.getElementById('metodoSeleccionado').value;
+
+        // Actualizar la fila con el pago y estado cumplida
+        filaEnProceso.cells[4].innerHTML = `<span class="badge badge-pago">${metodoElegido} - $${precioEnProceso.toLocaleString()}</span>`;
+        filaEnProceso.cells[5].innerHTML = '<span class="badge badge-completada">Cumplida</span>';
+        filaEnProceso.cells[6].innerHTML = '-';
+
+        // Actualizar métricas financieras
+        totalRecaudado += precioEnProceso;
+        citasPendientes--;
+        citasCompletadas++;
+        actualizarMetricas();
+
+        // Cerrar modal
+        document.getElementById('modalPago').style.display = 'none';
+        filaEnProceso = null;
+    });
+
+    function actualizarMetricas() {
+        document.getElementById('totalRecaudado').innerText = `$${totalRecaudado.toLocaleString()}`;
+        document.getElementById('countCompletadas').innerText = citasCompletadas;
+        document.getElementById('countPendientes').innerText = citasPendientes;
     }
 </script>
 
