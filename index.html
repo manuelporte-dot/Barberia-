@@ -3,27 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Barber Style - Sistema de Gestión</title>
+  <title>Barbería Deluxe - Sistema Profesional de Gestión</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #0f1117;
-      --card-bg: #1a1d26;
-      --accent-gold: #fbbf24;
-      --accent-gold-hover: #f59e0b;
+      --bg-dark: #0b0c10;
+      --card-bg: #151821;
+      --accent-gold: #e5a93b;
+      --accent-gold-hover: #c98e2b;
       --neon-cyan: #06b6d4;
       --neon-green: #10b981;
       --neon-red: #ef4444;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
-      --border-color: #2e3440;
+      --border-color: #272c3a;
+      --input-bg: #1c202c;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
     }
 
     body {
@@ -34,24 +35,37 @@
       flex-direction: column;
     }
 
+    /* HEADER */
     header {
-      background: linear-gradient(135deg, #1e2029 0%, #111319 100%);
+      background: linear-gradient(180deg, #181c28 0%, #0f1118 100%);
       border-bottom: 2px solid var(--accent-gold);
       padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(251, 191, 36, 0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 1.4rem;
+      font-weight: 700;
       color: var(--accent-gold);
       letter-spacing: 1px;
+    }
+
+    .brand-logo .scissors-icon {
+      background: var(--accent-gold);
+      color: #000;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
     }
 
     .header-actions {
@@ -74,18 +88,18 @@
     }
 
     .btn-gold {
-      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      background: linear-gradient(135deg, var(--accent-gold), #c98e2b);
       color: #000;
-      box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+      box-shadow: 0 4px 15px rgba(229, 169, 59, 0.25);
     }
 
     .btn-gold:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+      box-shadow: 0 6px 20px rgba(229, 169, 59, 0.45);
     }
 
     .btn-reset {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
       border: 1px solid var(--neon-red);
       color: var(--neon-red);
     }
@@ -95,6 +109,17 @@
       color: #fff;
     }
 
+    .btn-logout {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    /* CONTAINER PRINCIPAL */
     .container {
       max-width: 1200px;
       margin: 30px auto;
@@ -103,68 +128,150 @@
       width: 100%;
     }
 
-    /* PANTALLA SELECCIÓN DE ROL */
-    .welcome-card {
-      text-align: center;
-      padding: 50px 20px;
+    /* AUTH CARD - ESTILO CAPTURA */
+    .auth-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .auth-card {
       background: var(--card-bg);
-      border-radius: 16px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 460px;
+      padding: 40px 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      text-align: center;
     }
 
-    .welcome-card h1 {
-      font-size: 2.5rem;
+    .auth-card .logo-badge {
+      width: 65px;
+      height: 65px;
+      background: rgba(229, 169, 59, 0.15);
+      border: 2px solid var(--accent-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
       color: var(--accent-gold);
-      margin-bottom: 10px;
+      font-size: 1.8rem;
     }
 
-    .welcome-card p {
+    .auth-card h2 {
+      color: var(--accent-gold);
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .auth-card .subtitle {
       color: var(--text-muted);
-      font-size: 1.1rem;
-      margin-bottom: 40px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 25px;
     }
 
-    .roles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      margin-top: 20px;
+    .role-tabs {
+      display: flex;
+      background: #0f1118;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border-color);
     }
 
-    .role-card {
-      background: #232733;
-      padding: 30px 20px;
-      border-radius: 14px;
-      border: 2px solid transparent;
+    .role-tab {
+      flex: 1;
+      padding: 10px 5px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      text-align: center;
     }
 
-    .role-card i {
-      font-size: 3.5rem;
-      color: var(--accent-gold);
-      margin-bottom: 15px;
+    .role-tab.active {
+      background: var(--accent-gold);
+      color: #000;
+      box-shadow: 0 2px 8px rgba(229, 169, 59, 0.3);
     }
 
-    .role-card:hover {
-      border-color: var(--accent-gold);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
     }
 
-    .role-card h3 {
-      font-size: 1.4rem;
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
       margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .role-card p {
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon-wrapper i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .input-icon-wrapper input,
+    .input-icon-wrapper select {
+      width: 100%;
+      padding: 12px 15px 12px 42px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-icon-wrapper input:focus,
+    .input-icon-wrapper select:focus {
+      border-color: var(--accent-gold);
+      outline: none;
+      box-shadow: 0 0 10px rgba(229, 169, 59, 0.2);
+    }
+
+    .auth-footer-text {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer-text span {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .toggle-auth-mode {
+      color: var(--accent-gold);
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 600;
+      margin-top: 15px;
+      display: inline-block;
       font-size: 0.9rem;
-      margin-bottom: 0;
     }
 
-    /* MÓDULOS Y DASHBOARDS */
+    /* SECCIONES MÓDULOS */
     .module-section {
       display: none;
     }
@@ -178,6 +285,17 @@
       border-bottom: 1px solid var(--border-color);
     }
 
+    .user-info-badge {
+      background: rgba(229, 169, 59, 0.1);
+      border: 1px solid var(--accent-gold);
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: var(--accent-gold);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* DASHBOARD METRICS */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -187,34 +305,32 @@
 
     .stat-card {
       background: var(--card-bg);
-      padding: 20px;
+      padding: 22px;
       border-radius: 12px;
-      border-left: 5px solid var(--accent-gold);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
     }
 
-    .stat-card.green { border-left-color: var(--neon-green); }
-    .stat-card.cyan { border-left-color: var(--neon-cyan); }
-
     .stat-card h4 {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .stat-card .value {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
     }
 
     /* TABLAS */
     .table-container {
       background: var(--card-bg);
       border-radius: 12px;
-      overflow: hidden;
+      overflow-x: auto;
       border: 1px solid var(--border-color);
       box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       margin-bottom: 30px;
@@ -227,10 +343,10 @@
     }
 
     thead {
-      background: #252a37;
+      background: #1c202c;
       color: var(--accent-gold);
       text-transform: uppercase;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       letter-spacing: 0.8px;
     }
 
@@ -240,56 +356,37 @@
     }
 
     tbody tr:hover {
-      background: #212531;
+      background: rgba(255, 255, 255, 0.02);
     }
 
     .badge {
       padding: 6px 12px;
-      border-radius: 20px;
+      border-radius: 6px;
       font-size: 0.8rem;
       font-weight: 600;
       display: inline-block;
     }
 
-    .badge-pending { background: rgba(251, 191, 36, 0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+    .badge-pending { background: rgba(229, 169, 59, 0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
     .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--neon-green); border: 1px solid var(--neon-green); }
     .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--neon-red); border: 1px solid var(--neon-red); }
 
-    /* FORMULARIOS */
+    /* FORM CARD */
     .form-card {
       background: var(--card-bg);
       padding: 30px;
       border-radius: 14px;
       border: 1px solid var(--border-color);
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 auto 30px;
     }
 
-    .form-group {
+    .form-card h3 {
+      color: var(--accent-gold);
       margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--text-main);
-    }
-
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 12px 15px;
-      background: #111319;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 1rem;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--accent-gold);
-      outline: none;
-      box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+      font-size: 1.3rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
     }
 
     /* MODAL */
@@ -297,7 +394,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       backdrop-filter: blur(5px);
       justify-content: center;
       align-items: center;
@@ -306,32 +403,40 @@
 
     .modal-content {
       background: var(--card-bg);
-      padding: 30px;
+      padding: 35px 30px;
       border-radius: 16px;
-      border: 2px solid var(--accent-gold);
+      border: 1px solid var(--accent-gold);
       width: 90%;
-      max-width: 450px;
+      max-width: 440px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+      box-shadow: 0 0 35px rgba(229, 169, 59, 0.2);
     }
 
     .modal-content h3 {
-      color: var(--accent-gold);
-      margin-bottom: 15px;
-      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
     }
 
-    /* NOTIFICACIONES */
-    .notification-box {
-      background: rgba(6, 182, 212, 0.1);
-      border: 1px solid var(--neon-cyan);
-      color: var(--neon-cyan);
+    .modal-info-box {
+      background: var(--input-bg);
       padding: 15px;
       border-radius: 8px;
       margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      text-align: left;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-info-box p {
+      margin-bottom: 5px;
+      color: var(--text-muted);
+    }
+
+    .modal-info-box p span {
+      color: var(--text-main);
+      font-weight: 600;
     }
   </style>
 </head>
@@ -339,149 +444,187 @@
 
   <header>
     <div class="brand-logo">
-      <i class="fa-solid font-awesome-scissors"></i> BARBER STYLE
+      <div class="scissors-icon"><i class="fa-solid fa-scissors"></i></div>
+      BARBERÍA DELUXE
     </div>
     <div class="header-actions">
       <button class="btn btn-reset" onclick="resetSimulator()">
-        <i class="fa-solid fa-rotate-right"></i> Reset Simulador
+        <i class="fa-solid fa-rotate-right"></i> Reset
       </button>
-      <button id="btn-change-role" class="btn btn-gold" style="display:none;" onclick="showRoleSelection()">
-        <i class="fa-solid fa-user-gear"></i> Cambiar Rol
+      <button id="btn-logout" class="btn btn-logout" style="display:none;" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Salir
       </button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- SELECCIÓN DE ROL INICIAL -->
-    <section id="role-selection" class="welcome-card">
-      <h1>Bienvenido a Barber Style</h1>
-      <p>Selecciona tu rol para acceder al simulador de gestión</p>
-
-      <div class="roles-grid">
-        <div class="role-card" onclick="selectRole('cliente')">
-          <i class="fa-solid fa-user"></i>
-          <h3>Cliente</h3>
-          <p>Agendar, consultar y gestionar tus citas de corte.</p>
-        </div>
-        <div class="role-card" onclick="selectRole('barbero')">
+    <!-- MÓDULO DE LOGIN CON 3 BOTONES DE ROL (SEAGÚN CAPTURA) -->
+    <div id="auth-section" class="auth-wrapper">
+      <div class="auth-card">
+        <div class="logo-badge">
           <i class="fa-solid fa-scissors"></i>
-          <h3>Barbero</h3>
-          <p>Manuel Porte<br><small style="color:var(--text-muted)">Aprobar y finalizar atención</small></p>
         </div>
-        <div class="role-card" onclick="selectRole('admin')">
-          <i class="fa-solid fa-user-shield"></i>
-          <h3>Administrador</h3>
-          <p>Carlos Guerra<br><small style="color:var(--text-muted)">Cobros POS y métricas</small></p>
-        </div>
-      </div>
-    </section>
+        <h2>BARBERÍA DELUXE</h2>
+        <div class="subtitle">SISTEMA PROFESIONAL DE GESTIÓN</div>
 
-    <!-- LOGIN RESTRICTO (BARBERO / ADMIN) -->
-    <section id="login-module" class="module-section">
-      <div class="form-card">
-        <h2 id="login-title" style="color:var(--accent-gold); margin-bottom:20px; text-align:center;">Inicio de Sesión</h2>
-        <form onsubmit="handleLogin(event)">
+        <!-- 3 BOTONES DE SELECCIÓN RÁPIDA DE ROL -->
+        <div class="role-tabs">
+          <button class="role-tab active" onclick="switchRoleTab('cliente')">CLIENTE</button>
+          <button class="role-tab" onclick="switchRoleTab('barbero')">BARBERO</button>
+          <button class="role-tab" onclick="switchRoleTab('admin')">ADMIN</button>
+        </div>
+
+        <!-- FORMULARIO LOGIN -->
+        <form id="form-login" onsubmit="handleAuthLogin(event)">
           <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" id="login-email" required placeholder="correo@ejemplo.com">
+            <label id="label-email">CORREO ELECTRÓNICO</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="auth-email" required placeholder="correo@ejemplo.com">
+            </div>
           </div>
+
           <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" id="login-pass" required placeholder="******">
+            <label>CONTRASEÑA</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="auth-password" required placeholder="••••••••">
+            </div>
           </div>
-          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">
-            <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+
+          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center; padding:12px;">
+            INICIAR SESIÓN
           </button>
         </form>
+
+        <!-- FORMULARIO REGISTRO (SOLO CLIENTE) -->
+        <form id="form-register" style="display:none;" onsubmit="handleAuthRegister(event)">
+          <div class="form-group">
+            <label>NOMBRE COMPLETO</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="reg-name" required placeholder="Ej. Juan Vargas">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>CORREO ELECTRÓNICO</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" id="reg-email" required placeholder="juanvargas@gmail.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>TELÉFONO</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-phone"></i>
+              <input type="tel" id="reg-phone" required placeholder="3004509888">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>CONTRASEÑA</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="reg-password" required placeholder="••••••••">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center; padding:12px;">
+            REGISTRARME E INGRESA
+          </button>
+        </form>
+
+        <div id="register-toggle-box">
+          <span class="toggle-auth-mode" onclick="toggleAuthMode()">¿No tienes cuenta? Regístrate aquí</span>
+        </div>
+
+        <div class="auth-footer-text" id="auth-hint">
+          Acceso demo: Registra tus datos o usa un rol guardado.
+        </div>
       </div>
-    </section>
+    </div>
 
     <!-- MÓDULO CLIENTE -->
     <section id="cliente-module" class="module-section">
       <div class="module-header">
-        <h2><i class="fa-solid fa-user" style="color:var(--accent-gold);"></i> Panel de Cliente</h2>
-        <span id="cliente-welcome" style="color:var(--neon-cyan); font-weight:bold;"></span>
+        <h2><i class="fa-solid fa-calendar-check" style="color:var(--accent-gold);"></i> Panel de Reservas</h2>
+        <div class="user-info-badge" id="client-badge-info">Cliente</div>
       </div>
 
-      <div id="cliente-reg-form" class="form-card" style="margin-bottom:30px;">
-        <h3 style="color:var(--accent-gold); margin-bottom:15px;">Registro de Datos de Cliente</h3>
-        <form onsubmit="registerClient(event)">
+      <div class="form-card">
+        <h3>Agendar Cita de Barbería</h3>
+        <form onsubmit="bookAppointment(event)">
           <div class="form-group">
-            <label>Nombre Completo</label>
-            <input type="text" id="cli-name" required placeholder="Ej. Juan Vargas">
+            <label>Tipo de Corte / Servicio</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-scissors"></i>
+              <select id="app-service" required>
+                <option value="Corte de Cabello ($25,000)">Corte de Cabello ($25,000)</option>
+                <option value="Corte de Cabello y Barba ($35,000)">Corte de Cabello y Barba ($35,000)</option>
+                <option value="Arreglo de Barba ($15,000)">Arreglo de Barba ($15,000)</option>
+              </select>
+            </div>
           </div>
+
           <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" id="cli-email" required placeholder="juanvargas@gmail.com">
+            <label>Barbero Asignado</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-user-ninja"></i>
+              <input type="text" value="Manuel Porte" readonly style="background:#131620; color:var(--text-muted);">
+            </div>
           </div>
+
           <div class="form-group">
-            <label>Teléfono</label>
-            <input type="tel" id="cli-phone" required placeholder="3004509888">
+            <label>Fecha (Solo fechas posteriores/actuales)</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-calendar"></i>
+              <input type="date" id="app-date" required>
+            </div>
           </div>
-          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Guardar y Agendar</button>
+
+          <div class="form-group">
+            <label>Hora</label>
+            <div class="input-icon-wrapper">
+              <i class="fa-solid fa-clock"></i>
+              <input type="time" id="app-time" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">
+            CONFIRMAR SOLICITUD DE CITA
+          </button>
         </form>
       </div>
 
-      <div id="cliente-app-section" style="display:none;">
-        <div id="cliente-notification" class="notification-box" style="display:none;">
-          <i class="fa-solid fa-bell"></i>
-          <span id="notif-text"></span>
-        </div>
-
-        <div class="form-card" style="margin-bottom:30px;">
-          <h3 style="color:var(--accent-gold); margin-bottom:15px;">Agendar Nueva Cita</h3>
-          <form onsubmit="bookAppointment(event)">
-            <div class="form-group">
-              <label>Tipo de Corte / Servicio</label>
-              <select id="app-service" required>
-                <option value="Corte de Cabello ($25,000)">Corte de Cabello - $25,000</option>
-                <option value="Corte de Cabello y Barba ($35,000)">Corte de Cabello y Barba - $35,000</option>
-                <option value="Arreglo de Barba ($15,000)">Arreglo de Barba - $15,000</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Barbero</label>
-              <input type="text" value="Manuel Porte" readonly style="background:#1e222d; color:var(--text-muted);">
-            </div>
-            <div class="form-group">
-              <label>Fecha (Solo fechas de hoy en adelante)</label>
-              <input type="date" id="app-date" required>
-            </div>
-            <div class="form-group">
-              <label>Hora</label>
-              <input type="time" id="app-time" required>
-            </div>
-            <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Solicitar Cita</button>
-          </form>
-        </div>
-
-        <h3 style="color:var(--accent-gold); margin-bottom:15px;">Mis Citas Solicitadas</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Servicio</th>
-                <th>Barbero</th>
-                <th>Fecha y Hora</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody id="client-appointments-list">
-              <!-- Citas dinámicas -->
-            </tbody>
-          </table>
-        </div>
+      <h3 style="color:var(--accent-gold); margin-bottom:15px;">Mis Citas Solicitadas</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Servicio</th>
+              <th>Barbero</th>
+              <th>Fecha y Hora</th>
+              <th>Estado de Cita</th>
+            </tr>
+          </thead>
+          <tbody id="client-appointments-list">
+            <!-- Citas cliente -->
+          </tbody>
+        </table>
       </div>
     </section>
 
     <!-- MÓDULO BARBERO -->
     <section id="barbero-module" class="module-section">
       <div class="module-header">
-        <h2><i class="fa-solid fa-scissors" style="color:var(--accent-gold);"></i> Panel de Barbero (Manuel Porte)</h2>
+        <h2><i class="fa-solid fa-scissors" style="color:var(--accent-gold);"></i> Agenda del Barbero: Manuel Porte</h2>
+        <div class="user-info-badge">Barbero Activo</div>
       </div>
 
-      <h3 style="color:var(--accent-gold); margin-bottom:15px;">Solicitudes Entrantes y Estado de Citas</h3>
+      <h3 style="color:var(--accent-gold); margin-bottom:15px;">Gestionar Solicitudes de Clientes</h3>
       <div class="table-container">
         <table>
           <thead>
@@ -490,12 +633,12 @@
               <th>Gmail / Teléfono</th>
               <th>Servicio</th>
               <th>Fecha y Hora</th>
-              <th>Aprobación</th>
-              <th>Acción Atención</th>
+              <th>Aprobación (SÍ / NO)</th>
+              <th>Estado de Atención</th>
             </tr>
           </thead>
           <tbody id="barber-appointments-list">
-            <!-- Citas dinámicas -->
+            <!-- Citas barbero -->
           </tbody>
         </table>
       </div>
@@ -504,21 +647,23 @@
     <!-- MÓDULO ADMINISTRADOR -->
     <section id="admin-module" class="module-section">
       <div class="module-header">
-        <h2><i class="fa-solid fa-user-shield" style="color:var(--accent-gold);"></i> Panel de Administrador (Carlos Guerra)</h2>
+        <h2><i class="fa-solid fa-user-shield" style="color:var(--accent-gold);"></i> Panel de Administración POS (Carlos Guerra)</h2>
+        <div class="user-info-badge">Administrador</div>
       </div>
 
+      <!-- MÉTRICAS EN TIEMPO REAL -->
       <div class="stats-grid">
         <div class="stat-card">
-          <h4>Total Recaudado Hoy</h4>
+          <h4>TOTAL RECAUDADO HOY</h4>
           <div class="value" id="stat-income">$0</div>
         </div>
-        <div class="stat-card green">
-          <h4>Citas Completadas</h4>
-          <div class="value" id="stat-completed">0</div>
+        <div class="stat-card">
+          <h4>CITAS COMPLETADAS</h4>
+          <div class="value" id="stat-completed" style="color:var(--neon-green);">0</div>
         </div>
-        <div class="stat-card cyan">
-          <h4>Citas Pendientes</h4>
-          <div class="value" id="stat-pending">0</div>
+        <div class="stat-card">
+          <h4>CITAS PENDIENTES</h4>
+          <div class="value" id="stat-pending" style="color:var(--accent-gold);">0</div>
         </div>
       </div>
 
@@ -527,17 +672,17 @@
         <table>
           <thead>
             <tr>
-              <th>Cliente</th>
-              <th>Servicio y Precio</th>
-              <th>Barbero</th>
-              <th>Fecha y Hora</th>
-              <th>Método de Pago</th>
-              <th>Estado</th>
-              <th>Acción POS</th>
+              <th>CLIENTE</th>
+              <th>SERVICIO Y PRECIO</th>
+              <th>BARBERO</th>
+              <th>FECHA Y HORA</th>
+              <th>MÉTODO DE PAGO</th>
+              <th>ESTADO</th>
+              <th>ACCIÓN</th>
             </tr>
           </thead>
           <tbody id="admin-appointments-list">
-            <!-- Citas dinámicas -->
+            <!-- Citas admin -->
           </tbody>
         </table>
       </div>
@@ -549,22 +694,28 @@
   <div id="payment-modal" class="modal">
     <div class="modal-content">
       <h3>FINALIZAR CORTE Y PAGAR</h3>
-      <p id="modal-client-info" style="color:var(--text-muted); margin-bottom:10px;"></p>
-      <p id="modal-service-info" style="color:var(--accent-gold); font-weight:bold; margin-bottom:20px;"></p>
+      
+      <div class="modal-info-box">
+        <p>Cliente: <span id="modal-client-name">-</span></p>
+        <p>Servicio: <span id="modal-service-name">-</span></p>
+      </div>
       
       <div class="form-group" style="text-align:left;">
         <label>Selecciona Método de Pago:</label>
-        <select id="modal-payment-method">
-          <option value="Efectivo">Efectivo</option>
-          <option value="Tarjeta">Tarjeta (Débito/Crédito)</option>
-          <option value="Nequi">Nequi</option>
-          <option value="Daviplata">Daviplata</option>
-          <option value="PSE">PSE</option>
-          <option value="Código QR">Código QR</option>
-        </select>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-credit-card"></i>
+          <select id="modal-payment-method">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta (Débito/Crédito)</option>
+            <option value="Nequi">Nequi</option>
+            <option value="Daviplata">Daviplata</option>
+            <option value="PSE">PSE</option>
+            <option value="Código QR">Código QR</option>
+          </select>
+        </div>
       </div>
 
-      <button class="btn btn-gold" style="width:100%; justify-content:center; margin-bottom:10px;" onclick="confirmPayment()">
+      <button class="btn btn-gold" style="width:100%; justify-content:center; margin-bottom:12px; padding:12px;" onclick="confirmPayment()">
         CONFIRMAR PAGO Y CERRAR CITA
       </button>
       <button class="btn btn-reset" style="width:100%; justify-content:center;" onclick="closeModal()">
@@ -574,121 +725,203 @@
   </div>
 
   <script>
-    // ESTADO GENERAL DE LA APLICACIÓN
-    let currentRole = null;
-    let currentClient = null;
+    // ESTADO GLOBAL DE LA APLICACIÓN
+    let activeRoleTab = 'cliente'; // 'cliente', 'barbero', 'admin'
+    let isRegisterMode = false;
+    let currentUser = null;
     let selectedAppointmentIndex = null;
 
-    let appointments = JSON.parse(localStorage.getItem('bs_appointments')) || [];
+    // BASE DE DATOS LOCAL
+    let users = JSON.parse(localStorage.getItem('bd_users')) || [
+      { email: 'manuelporte@gmail.com', pass: 'manu123', name: 'Manuel Porte', role: 'barbero', phone: '3100000000' },
+      { email: 'carlosguerra@gmail.com', pass: 'carlos456', name: 'Carlos Guerra', role: 'admin', phone: '3200000000' },
+      { email: 'juanvargas@gmail.com', pass: 'juan123', name: 'Juan Vargas', role: 'cliente', phone: '3004509888' }
+    ];
 
-    // CONFIGURAR RESTRICCIÓN DE FECHAS DE HOY EN ADELANTE
+    let appointments = JSON.parse(localStorage.getItem('bd_appointments')) || [
+      {
+        clientName: 'manuel',
+        clientEmail: 'manuel@gmail.com',
+        clientPhone: '3001234567',
+        service: 'Corte de Cabello y Barba ($35,000)',
+        price: 35000,
+        barber: 'Manuel Porte',
+        datetime: '2026-10-24 | 11:30 AM',
+        approvalStatus: 'Aprobada',
+        serviceStatus: 'Terminado',
+        paymentStatus: 'Pendiente de pago',
+        paymentMethod: '-'
+      }
+    ];
+
     document.addEventListener("DOMContentLoaded", () => {
+      // Configurar fecha mínima como HOY para evitar seleccionar días pasados
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('app-date').setAttribute('min', today);
     });
 
-    function selectRole(role) {
-      currentRole = role;
-      document.getElementById('role-selection').style.display = 'none';
-      document.getElementById('btn-change-role').style.display = 'inline-flex';
+    // CAMBIAR TAB DE ROL
+    function switchRoleTab(role) {
+      activeRoleTab = role;
+      document.querySelectorAll('.role-tab').forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
 
-      if (role === 'cliente') {
-        document.getElementById('cliente-module').style.display = 'block';
-      } else if (role === 'barbero') {
-        showLogin('Barbero (Manuel Porte)');
+      const registerToggle = document.getElementById('register-toggle-box');
+      const authHint = document.getElementById('auth-hint');
+
+      if (role === 'barbero') {
+        setRegisterMode(false);
+        registerToggle.style.display = 'none';
+        document.getElementById('auth-email').value = 'manuelporte@gmail.com';
+        document.getElementById('auth-password').value = 'manu123';
+        authHint.innerHTML = 'Credenciales Barbero: <span>manuelporte@gmail.com / manu123</span>';
       } else if (role === 'admin') {
-        showLogin('Administrador (Carlos Guerra)');
+        setRegisterMode(false);
+        registerToggle.style.display = 'none';
+        document.getElementById('auth-email').value = 'carlosguerra@gmail.com';
+        document.getElementById('auth-password').value = 'carlos456';
+        authHint.innerHTML = 'Credenciales Admin: <span>carlosguerra@gmail.com / carlos456</span>';
+      } else {
+        registerToggle.style.display = 'block';
+        document.getElementById('auth-email').value = 'juanvargas@gmail.com';
+        document.getElementById('auth-password').value = 'juan123';
+        authHint.innerHTML = 'Demo Cliente: <span>juanvargas@gmail.com / juan123</span>';
       }
     }
 
-    function showRoleSelection() {
-      document.querySelectorAll('.module-section').forEach(el => el.style.display = 'none');
-      document.getElementById('role-selection').style.display = 'block';
-      document.getElementById('btn-change-role').style.display = 'none';
-      document.getElementById('login-module').style.display = 'none';
+    function toggleAuthMode() {
+      setRegisterMode(!isRegisterMode);
     }
 
-    function showLogin(title) {
-      document.getElementById('login-title').innerText = 'Acceso ' + title;
-      document.getElementById('login-module').style.display = 'block';
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value;
-      const pass = document.getElementById('login-pass').value;
-
-      if (currentRole === 'barbero') {
-        if (email === 'manuelporte@gmail.com' && pass === 'manu123') {
-          document.getElementById('login-module').style.display = 'none';
-          document.getElementById('barbero-module').style.display = 'block';
-          renderBarberTable();
-        } else {
-          alert('Credenciales incorrectas para Barbero (manuelporte@gmail.com / manu123)');
-        }
-      } else if (currentRole === 'admin') {
-        if (email === 'carlosguerra@gmail.com' && pass === 'carlos456') {
-          document.getElementById('login-module').style.display = 'none';
-          document.getElementById('admin-module').style.display = 'block';
-          renderAdminDashboard();
-        } else {
-          alert('Credenciales incorrectas para Administrador (carlosguerra@gmail.com / carlos456)');
-        }
+    function setRegisterMode(register) {
+      isRegisterMode = register;
+      if (register) {
+        document.getElementById('form-login').style.display = 'none';
+        document.getElementById('form-register').style.display = 'block';
+        document.querySelector('.toggle-auth-mode').innerText = '¿Ya tienes cuenta? Inicia sesión aquí';
+      } else {
+        document.getElementById('form-login').style.display = 'block';
+        document.getElementById('form-register').style.display = 'none';
+        document.querySelector('.toggle-auth-mode').innerText = '¿No tienes cuenta? Regístrate aquí';
       }
-      document.getElementById('login-email').value = '';
-      document.getElementById('login-pass').value = '';
     }
 
-    function registerClient(e) {
+    // AUTHENTICATION HANDLERS
+    function handleAuthLogin(e) {
       e.preventDefault();
-      currentClient = {
-        name: document.getElementById('cli-name').value,
-        email: document.getElementById('cli-email').value,
-        phone: document.getElementById('cli-phone').value
-      };
-      document.getElementById('cliente-reg-form').style.display = 'none';
-      document.getElementById('cliente-app-section').style.display = 'block';
-      document.getElementById('cliente-welcome').innerText = `Cliente: ${currentClient.name}`;
-      renderClientAppointments();
+      const email = document.getElementById('auth-email').value.trim();
+      const pass = document.getElementById('auth-password').value.trim();
+
+      const foundUser = users.find(u => u.email === email && u.pass === pass);
+
+      if (!foundUser) {
+        alert('Credenciales incorrectas para el usuario o rol seleccionado.');
+        return;
+      }
+
+      if (activeRoleTab !== foundUser.role && activeRoleTab !== 'cliente') {
+        alert(`Este usuario pertenece al rol de ${foundUser.role.toUpperCase()}.`);
+        return;
+      }
+
+      currentUser = foundUser;
+      launchUserSession();
     }
 
+    function handleAuthRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const pass = document.getElementById('reg-password').value.trim();
+
+      if (users.find(u => u.email === email)) {
+        alert('El correo electrónico ya se encuentra registrado.');
+        return;
+      }
+
+      const newUser = { email, pass, name, role: 'cliente', phone };
+      users.push(newUser);
+      localStorage.setItem('bd_users', JSON.stringify(users));
+
+      currentUser = newUser;
+      alert('¡Registro completado con éxito!');
+      launchUserSession();
+    }
+
+    function launchUserSession() {
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('btn-logout').style.display = 'inline-flex';
+
+      if (currentUser.role === 'cliente') {
+        document.getElementById('cliente-module').style.display = 'block';
+        document.getElementById('client-badge-info').innerText = `${currentUser.name} (${currentUser.email})`;
+        renderClientAppointments();
+      } else if (currentUser.role === 'barbero') {
+        document.getElementById('barbero-module').style.display = 'block';
+        renderBarberTable();
+      } else if (currentUser.role === 'admin') {
+        document.getElementById('admin-module').style.display = 'block';
+        renderAdminDashboard();
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      document.querySelectorAll('.module-section').forEach(m => m.style.display = 'none');
+      document.getElementById('auth-section').style.display = 'flex';
+      document.getElementById('btn-logout').style.display = 'none';
+      switchRoleTab('cliente');
+    }
+
+    // CLIENTE: BOOKING
     function bookAppointment(e) {
       e.preventDefault();
       const service = document.getElementById('app-service').value;
       const date = document.getElementById('app-date').value;
       const time = document.getElementById('app-time').value;
 
-      const newApp = {
-        clientName: currentClient.name,
-        clientEmail: currentClient.email,
-        clientPhone: currentClient.phone,
+      let price = 35000;
+      if (service.includes('25,000')) price = 25000;
+      if (service.includes('15,000')) price = 15000;
+
+      const newAppointment = {
+        clientName: currentUser.name,
+        clientEmail: currentUser.email,
+        clientPhone: currentUser.phone,
         service: service,
-        price: service.includes('$35,000') ? 35000 : (service.includes('$25,000') ? 25000 : 15000),
+        price: price,
         barber: 'Manuel Porte',
         datetime: `${date} | ${time}`,
-        approvalStatus: 'Pendiente de Aprobación', // Pendiente, Aprobada, Rechazada
-        serviceStatus: 'En Espera', // En Espera, En Corte, Terminado, Cumplida
+        approvalStatus: 'Pendiente de Aprobación',
+        serviceStatus: 'En Espera',
         paymentStatus: 'Pendiente de pago',
         paymentMethod: '-'
       };
 
-      appointments.push(newApp);
-      saveData();
+      appointments.push(newAppointment);
+      saveAppointments();
       renderClientAppointments();
-      alert('¡Cita solicitada! Está pendiente de aprobación por el barbero Manuel Porte.');
+      alert('Solicitud enviada a Manuel Porte. El barbero evaluará tu cita.');
     }
 
     function renderClientAppointments() {
       const tbody = document.getElementById('client-appointments-list');
       tbody.innerHTML = '';
-      const clientApps = appointments.filter(a => a.clientEmail === currentClient?.email);
 
-      clientApps.forEach((app) => {
-        let statusBadge = `<span class="badge badge-pending">${app.approvalStatus}</span>`;
+      const myApps = appointments.filter(a => a.clientEmail === currentUser.email);
+
+      if (myApps.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No tienes citas registradas.</td></tr>`;
+        return;
+      }
+
+      myApps.forEach(app => {
+        let badge = `<span class="badge badge-pending">${app.approvalStatus}</span>`;
         if (app.approvalStatus === 'Aprobada') {
-          statusBadge = `<span class="badge badge-success">Aprobada - ${app.serviceStatus}</span>`;
+          badge = `<span class="badge badge-success">Aprobada (${app.serviceStatus})</span>`;
         } else if (app.approvalStatus === 'Rechazada') {
-          statusBadge = `<span class="badge badge-danger">Rechazada</span>`;
+          badge = `<span class="badge badge-danger">Rechazada</span>`;
         }
 
         tbody.innerHTML += `
@@ -696,12 +929,13 @@
             <td>${app.service}</td>
             <td>${app.barber}</td>
             <td>${app.datetime}</td>
-            <td>${statusBadge}</td>
+            <td>${badge}</td>
           </tr>
         `;
       });
     }
 
+    // BARBERO
     function renderBarberTable() {
       const tbody = document.getElementById('barber-appointments-list');
       tbody.innerHTML = '';
@@ -710,8 +944,8 @@
         let approvalBtn = '';
         if (app.approvalStatus === 'Pendiente de Aprobación') {
           approvalBtn = `
-            <button class="btn btn-gold" style="padding:4px 8px; font-size:0.8rem;" onclick="setApproval(${index}, 'Aprobada')">SÍ</button>
-            <button class="btn btn-reset" style="padding:4px 8px; font-size:0.8rem;" onclick="setApproval(${index}, 'Rechazada')">NO</button>
+            <button class="btn btn-gold" style="padding:4px 10px; font-size:0.8rem;" onclick="setApproval(${index}, 'Aprobada')">SÍ</button>
+            <button class="btn btn-reset" style="padding:4px 10px; font-size:0.8rem;" onclick="setApproval(${index}, 'Rechazada')">NO</button>
           `;
         } else {
           approvalBtn = `<span class="badge ${app.approvalStatus === 'Aprobada' ? 'badge-success' : 'badge-danger'}">${app.approvalStatus}</span>`;
@@ -720,9 +954,9 @@
         let actionBtn = '-';
         if (app.approvalStatus === 'Aprobada') {
           if (app.serviceStatus === 'En Espera') {
-            actionBtn = `<button class="btn btn-gold" style="padding:4px 8px; font-size:0.8rem;" onclick="setServiceStatus(${index}, 'En Corte')">Iniciar Corte</button>`;
+            actionBtn = `<button class="btn btn-gold" style="padding:4px 10px; font-size:0.8rem;" onclick="setServiceStatus(${index}, 'En Corte')">Iniciar Corte</button>`;
           } else if (app.serviceStatus === 'En Corte') {
-            actionBtn = `<button class="btn btn-gold" style="padding:4px 8px; font-size:0.8rem; background:var(--neon-green); color:#000;" onclick="setServiceStatus(${index}, 'Terminado')">Dar por Terminado</button>`;
+            actionBtn = `<button class="btn btn-gold" style="padding:4px 10px; font-size:0.8rem; background:var(--neon-green); color:#000;" onclick="setServiceStatus(${index}, 'Terminado')">Dar por Terminado</button>`;
           } else {
             actionBtn = `<span class="badge badge-success">${app.serviceStatus}</span>`;
           }
@@ -743,39 +977,40 @@
 
     function setApproval(index, status) {
       appointments[index].approvalStatus = status;
-      saveData();
+      saveAppointments();
       renderBarberTable();
     }
 
     function setServiceStatus(index, status) {
       appointments[index].serviceStatus = status;
-      saveData();
+      saveAppointments();
       renderBarberTable();
     }
 
+    // ADMINISTRADOR
     function renderAdminDashboard() {
       const tbody = document.getElementById('admin-appointments-list');
       tbody.innerHTML = '';
 
-      let income = 0;
-      let completed = 0;
-      let pending = 0;
+      let totalIncome = 0;
+      let completedCount = 0;
+      let pendingCount = 0;
 
       appointments.forEach((app, index) => {
         if (app.serviceStatus === 'Cumplida') {
-          income += app.price;
-          completed++;
+          totalIncome += app.price;
+          completedCount++;
         } else {
-          pending++;
+          pendingCount++;
         }
 
         let payBadge = app.paymentStatus === 'Pendiente de pago' 
-          ? `<span class="badge badge-danger">Pendiente de pago</span>` 
-          : `<span class="badge badge-success">${app.paymentMethod} - $${app.price.toLocaleString()}</span>`;
+          ? `<span class="badge badge-danger" style="background:rgba(239, 68, 68, 0.2);">Pendiente de pago</span>` 
+          : `<span class="badge badge-success" style="background:rgba(6, 182, 212, 0.2); color:var(--neon-cyan); border-color:var(--neon-cyan);">${app.paymentMethod} - $${app.price.toLocaleString()}</span>`;
 
         let actionBtn = '-';
         if (app.serviceStatus === 'Terminado' && app.paymentStatus === 'Pendiente de pago') {
-          actionBtn = `<button class="btn btn-gold" style="padding:6px 12px; font-size:0.85rem; background:var(--neon-green); color:#000;" onclick="openPaymentModal(${index})">Finalizar Corte</button>`;
+          actionBtn = `<button class="btn btn-gold" style="padding:6px 14px; font-size:0.85rem; background:var(--neon-green); color:#000;" onclick="openPaymentModal(${index})">Finalizar Corte</button>`;
         }
 
         tbody.innerHTML += `
@@ -791,16 +1026,16 @@
         `;
       });
 
-      document.getElementById('stat-income').innerText = `$${income.toLocaleString()}`;
-      document.getElementById('stat-completed').innerText = completed;
-      document.getElementById('stat-pending').innerText = pending;
+      document.getElementById('stat-income').innerText = `$${totalIncome.toLocaleString()}`;
+      document.getElementById('stat-completed').innerText = completedCount;
+      document.getElementById('stat-pending').innerText = pendingCount;
     }
 
     function openPaymentModal(index) {
       selectedAppointmentIndex = index;
       const app = appointments[index];
-      document.getElementById('modal-client-info').innerText = `Cliente: ${app.clientName}`;
-      document.getElementById('modal-service-info').innerText = `Servicio: ${app.service}`;
+      document.getElementById('modal-client-name').innerText = app.clientName;
+      document.getElementById('modal-service-name').innerText = app.service;
       document.getElementById('payment-modal').style.display = 'flex';
     }
 
@@ -813,21 +1048,35 @@
       appointments[selectedAppointmentIndex].paymentStatus = 'Pagado';
       appointments[selectedAppointmentIndex].paymentMethod = method;
       appointments[selectedAppointmentIndex].serviceStatus = 'Cumplida';
-      
-      saveData();
+
+      saveAppointments();
       closeModal();
       renderAdminDashboard();
     }
 
-    function saveData() {
-      localStorage.setItem('bs_appointments', JSON.stringify(appointments));
+    function saveAppointments() {
+      localStorage.setItem('bd_appointments', JSON.stringify(appointments));
     }
 
     function resetSimulator() {
-      if (confirm('¿Deseas reiniciar todas las citas de la simulación?')) {
-        appointments = [];
-        saveData();
-        showRoleSelection();
+      if (confirm('¿Deseas reiniciar todas las citas del simulador manteniendo la base de usuarios?')) {
+        appointments = [
+          {
+            clientName: 'manuel',
+            clientEmail: 'manuel@gmail.com',
+            clientPhone: '3001234567',
+            service: 'Corte de Cabello y Barba ($35,000)',
+            price: 35000,
+            barber: 'Manuel Porte',
+            datetime: '2026-10-24 | 11:30 AM',
+            approvalStatus: 'Aprobada',
+            serviceStatus: 'Terminado',
+            paymentStatus: 'Pendiente de pago',
+            paymentMethod: '-'
+          }
+        ];
+        saveAppointments();
+        logout();
       }
     }
   </script>
